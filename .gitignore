@@ -53,3 +53,9 @@ dkms.conf
 
 # Ghostwriter backups
 *md.backup
+
+#IDE stuff
+.vscode/
+
+#Zephyr stuff
+build/*

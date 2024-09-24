@@ -7,8 +7,11 @@ Main     -> Main     : define devices
 Main     -> Main     : initialize devices
 CLI      -> CLI      : process input
 CLI      -> Requests : device, type, params
+CLI      -> CLI      : command polls for Returns
 Requests -> Main     : device, type, params
-Main     -> Main     : error = handler(device, type, params, &result)
+Main     -> Main     : handler() polls for Requests
+Main     -> Main     : handler() calls <peripheral>_handler() from handlers[msg_type]
+Main     -> Main     : handler() puts result and error from <peripheral>_handler into Returns message
 Main     -> Returns  : result, error
 Returns  -> CLI      : result, error
 CLI      -> CLI      : print results, errors
