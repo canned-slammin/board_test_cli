@@ -1,0 +1,15 @@
+@startuml
+participant CLI
+queue Requests
+queue Returns
+participant Main
+Main     -> Main     : define devices
+Main     -> Main     : initialize devices
+CLI      -> CLI      : process input
+CLI      -> Requests : device, type, params
+Requests -> Main     : device, type, params
+Main     -> Main     : error = handler(device, type, params, &result)
+Main     -> Returns  : result, error
+Returns  -> CLI      : result, error
+CLI      -> CLI      : print results, errors
+@enduml
