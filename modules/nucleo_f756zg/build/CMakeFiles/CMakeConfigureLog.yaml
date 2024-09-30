@@ -1,0 +1,164 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineSystem.cmake:200 (message)"
+      - "C:/Users/samburner/zephyrproject/zephyr/cmake/modules/kernel.cmake:128 (project)"
+      - "C:/Users/samburner/zephyrproject/zephyr/cmake/modules/zephyr_default.cmake:141 (include)"
+      - "C:/Users/samburner/zephyrproject/zephyr/share/zephyr-package/cmake/ZephyrConfig.cmake:66 (include)"
+      - "C:/Users/samburner/zephyrproject/zephyr/share/zephyr-package/cmake/ZephyrConfig.cmake:92 (include_boilerplate)"
+      - "CMakeLists.txt:4 (find_package)"
+    message: |
+      The target system is: Generic - 3.7.0 - arm
+      The host system is: Windows - 10.0.19045 - AMD64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "C:/Users/samburner/zephyrproject/zephyr/cmake/modules/kernel.cmake:128 (project)"
+      - "C:/Users/samburner/zephyrproject/zephyr/cmake/modules/zephyr_default.cmake:141 (include)"
+      - "C:/Users/samburner/zephyrproject/zephyr/share/zephyr-package/cmake/ZephyrConfig.cmake:66 (include)"
+      - "C:/Users/samburner/zephyrproject/zephyr/share/zephyr-package/cmake/ZephyrConfig.cmake:92 (include_boilerplate)"
+      - "CMakeLists.txt:4 (find_package)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+      Compiler: C:/Program Files/zephyr-sdk-0.16.8/arm-zephyr-eabi/bin/arm-zephyr-eabi-gcc.exe 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      1
+      c:/program files/zephyr-sdk-0.16.8/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.2.0/../../../../arm-zephyr-eabi/bin/ld.exe: c:/program files/zephyr-sdk-0.16.8/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.2.0/../../../../arm-zephyr-eabi/lib\\libc.a(lib_a-exit.o): in function `exit':
+      exit.c:(.text.exit+0x34): undefined reference to `_exit'
+      collect2.exe: error: ld returned 1 exit status
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "C:/Users/samburner/zephyrproject/zephyr/cmake/modules/kernel.cmake:128 (project)"
+      - "C:/Users/samburner/zephyrproject/zephyr/cmake/modules/zephyr_default.cmake:141 (include)"
+      - "C:/Users/samburner/zephyrproject/zephyr/share/zephyr-package/cmake/ZephyrConfig.cmake:66 (include)"
+      - "C:/Users/samburner/zephyrproject/zephyr/share/zephyr-package/cmake/ZephyrConfig.cmake:92 (include_boilerplate)"
+      - "CMakeLists.txt:4 (find_package)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: C:/Program Files/zephyr-sdk-0.16.8/arm-zephyr-eabi/bin/arm-zephyr-eabi-gcc.exe 
+      Build flags: 
+      Id flags: -c 
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.o"
+      
+      The C compiler identification is GNU, found in:
+        C:/Users/samburner/zephyrproject/board_test_cli/modules/nucleo_f756zg/build/CMakeFiles/3.30.0-rc3/CompilerIdC/CMakeCCompilerId.o
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "C:/Users/samburner/zephyrproject/zephyr/cmake/modules/kernel.cmake:128 (project)"
+      - "C:/Users/samburner/zephyrproject/zephyr/cmake/modules/zephyr_default.cmake:141 (include)"
+      - "C:/Users/samburner/zephyrproject/zephyr/share/zephyr-package/cmake/ZephyrConfig.cmake:66 (include)"
+      - "C:/Users/samburner/zephyrproject/zephyr/share/zephyr-package/cmake/ZephyrConfig.cmake:92 (include_boilerplate)"
+      - "CMakeLists.txt:4 (find_package)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+      Compiler: C:/Program Files/zephyr-sdk-0.16.8/arm-zephyr-eabi/bin/arm-zephyr-eabi-gcc.exe 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      1
+      c:/program files/zephyr-sdk-0.16.8/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.2.0/../../../../arm-zephyr-eabi/bin/ld.exe: c:/program files/zephyr-sdk-0.16.8/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.2.0/../../../../arm-zephyr-eabi/lib\\libc.a(lib_a-exit.o): in function `exit':
+      exit.c:(.text.exit+0x34): undefined reference to `_exit'
+      collect2.exe: error: ld returned 1 exit status
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "C:/Users/samburner/zephyrproject/zephyr/cmake/modules/kernel.cmake:128 (project)"
+      - "C:/Users/samburner/zephyrproject/zephyr/cmake/modules/zephyr_default.cmake:141 (include)"
+      - "C:/Users/samburner/zephyrproject/zephyr/share/zephyr-package/cmake/ZephyrConfig.cmake:66 (include)"
+      - "C:/Users/samburner/zephyrproject/zephyr/share/zephyr-package/cmake/ZephyrConfig.cmake:92 (include_boilerplate)"
+      - "CMakeLists.txt:4 (find_package)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler: C:/Program Files/zephyr-sdk-0.16.8/arm-zephyr-eabi/bin/arm-zephyr-eabi-gcc.exe 
+      Build flags: 
+      Id flags: -c 
+      
+      The output was:
+      0
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CMakeCXXCompilerId.o"
+      
+      The CXX compiler identification is GNU, found in:
+        C:/Users/samburner/zephyrproject/board_test_cli/modules/nucleo_f756zg/build/CMakeFiles/3.30.0-rc3/CompilerIdCXX/CMakeCXXCompilerId.o
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineCompilerId.cmake:1192 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CMakeDetermineASMCompiler.cmake:135 (CMAKE_DETERMINE_COMPILER_ID_VENDOR)"
+      - "C:/Users/samburner/zephyrproject/zephyr/cmake/modules/kernel.cmake:134 (enable_language)"
+      - "C:/Users/samburner/zephyrproject/zephyr/cmake/modules/zephyr_default.cmake:141 (include)"
+      - "C:/Users/samburner/zephyrproject/zephyr/share/zephyr-package/cmake/ZephyrConfig.cmake:66 (include)"
+      - "C:/Users/samburner/zephyrproject/zephyr/share/zephyr-package/cmake/ZephyrConfig.cmake:92 (include_boilerplate)"
+      - "CMakeLists.txt:4 (find_package)"
+    message: |
+      Checking whether the ASM compiler is GNU using "--version" matched "(GNU assembler)|(GCC)|(Free Software Foundation)":
+      arm-zephyr-eabi-gcc.exe (Zephyr SDK 0.16.8) 12.2.0
+      Copyright (C) 2022 Free Software Foundation, Inc.
+      This is free software; see the source for copying conditions.  There is NO
+      warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "C:/Program Files/CMake/share/cmake-3.30/Modules/CheckCCompilerFlag.cmake:51 (cmake_check_compiler_flag)"
+      - "C:/Users/samburner/zephyrproject/zephyr/cmake/modules/extensions.cmake:2255 (check_c_compiler_flag)"
+      - "C:/Users/samburner/zephyrproject/zephyr/cmake/modules/extensions.cmake:1114 (check_compiler_flag)"
+      - "C:/Users/samburner/zephyrproject/zephyr/cmake/modules/extensions.cmake:2294 (zephyr_check_compiler_flag)"
+      - "C:/Users/samburner/zephyrproject/zephyr/cmake/modules/extensions.cmake:2270 (target_cc_option_fallback)"
+      - "C:/Users/samburner/zephyrproject/zephyr/cmake/modules/extensions.cmake:126 (target_cc_option)"
+      - "C:/Users/samburner/zephyrproject/zephyr/CMakeLists.txt:487 (zephyr_cc_option)"
+    directories:
+      source: "C:/Users/samburner/zephyrproject/board_test_cli/modules/nucleo_f756zg/build/CMakeFiles/CMakeScratch/TryCompile-689ugx"
+      binary: "C:/Users/samburner/zephyrproject/board_test_cli/modules/nucleo_f756zg/build/CMakeFiles/CMakeScratch/TryCompile-689ugx"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "C:/Users/samburner/zephyrproject/zephyr/cmake/modules"
+    buildResult:
+      variable: "check_fmacro_prefix_map_C__Users_samburner_zephyrproject_board_test_cli_modules_nucleo_f756zg_CMAKE_SOURCE_DIR_C__nostartfiles__nostdlib__isystem__c__program_files_zephyr_sdk_0_16_8_arm_zephyr_eabi_bin____lib_gcc_arm_zephyr_eabi_12_2_0_include___isystem__c__program_files_zephyr_sdk_0_16_8_arm_zephyr_eabi_bin____lib_gcc_arm_zephyr_eabi_12_2_0_include_fixed___Wl___unresolved_symbols_ignore_in_object_files__Wl___entry_0"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/samburner/zephyrproject/board_test_cli/modules/nucleo_f756zg/build/CMakeFiles/CMakeScratch/TryCompile-689ugx'
+        
+        Run Build Command(s): C:/Users/samburner/AppData/Local/Microsoft/WinGet/Links/ninja.exe -v cmTC_3c065
+        [1/2] C:\\PROGRA~1\\ZEPHYR~1.8\\ARM-ZE~1\\bin\\AR1445~1.EXE -Dcheck_fmacro_prefix_map_C__Users_samburner_zephyrproject_board_test_cli_modules_nucleo_f756zg_CMAKE_SOURCE_DIR_C__nostartfiles__nostdlib__isystem__c__program_files_zephyr_sdk_0_16_8_arm_zephyr_eabi_bin____lib_gcc_arm_zephyr_eabi_12_2_0_include___isystem__c__program_files_zephyr_sdk_0_16_8_arm_zephyr_eabi_bin____lib_gcc_arm_zephyr_eabi_12_2_0_include_fixed___Wl___unresolved_symbols_ignore_in_object_files__Wl___entry_0  -nostartfiles -nostdlib -isystem "c:/program files/zephyr-sdk-0.16.8/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.2.0/include" -isystem "c:/program files/zephyr-sdk-0.16.8/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.2.0/include-fixed" -Wl,--unresolved-symbols=ignore-in-object-files -Wl,--entry=0   -fmacro-prefix-map=C:/Users/samburner/zephyrproject/board_test_cli/modules/nucleo_f756zg=CMAKE_SOURCE_DIR -o CMakeFiles/cmTC_3c065.dir/src.c.obj -c C:/Users/samburner/zephyrproject/board_test_cli/modules/nucleo_f756zg/build/CMakeFiles/CMakeScratch/TryCompile-689ugx/src.c
+        [2/2] C:\\Windows\\system32\\cmd.exe /C "cd . && C:\\PROGRA~1\\ZEPHYR~1.8\\ARM-ZE~1\\bin\\AR1445~1.EXE -nostartfiles -nostdlib -isystem "c:/program files/zephyr-sdk-0.16.8/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.2.0/include" -isystem "c:/program files/zephyr-sdk-0.16.8/arm-zephyr-eabi/bin/../lib/gcc/arm-zephyr-eabi/12.2.0/include-fixed" -Wl,--unresolved-symbols=ignore-in-object-files -Wl,--entry=0  CMakeFiles/cmTC_3c065.dir/src.c.obj -o cmTC_3c065   && cd ."
+        
+      exitCode: 0
+...
