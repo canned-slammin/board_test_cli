@@ -61,3 +61,4 @@ dkms.conf
 build/*
 modules/nucleo_f756zg/build/*
 modules/nrf/build/*
+modules/south_caroline/build/*
