@@ -57,6 +57,7 @@ dkms.conf
 #IDE stuff
 .vscode/
 python/.idea/*
+.idea/*
 
 #Zephyr stuff
 build/*
