@@ -1,4 +1,4 @@
-
+import serial
 
 
 class RTTInterface:
@@ -15,8 +15,21 @@ class RTTInterface:
         print('not yet implemented')
 
 class UARTInterface:
-    def __init__(self):
-        print('UART interface not yet implemented')
+    def __init__(self,
+                 port=None,
+                 hwid=None,
+                 baudrate=115200,
+                 read_timeout=3,
+                 write_timeout=3):
+        self.port = port
+        self.hwid = hwid
+        self.baudrate = baudrate
+        if self.port is None:
+            self.port = self.find_port()
+        self.ser = serial.Serial(port=self.port,
+                                 baudrate=self.baudrate,
+                                 timeout=read_timeout,
+                                 write_timeout=write_timeout)
 
     def connect(self):
         print('not yet implemented')
@@ -27,11 +40,14 @@ class UARTInterface:
     def write(self):
         print('not yet implemented')
 
+    def find_port(self):
+        print('not yet implemented')
+
 class ZShell:
-    def __init__(self, interface='uart'):
-        if interface.lower() is 'uart':
+    def __init__(self, interface='uart', port=None, hwid=None):
+        if interface.lower() == 'uart':
             self.interface = UARTInterface()
-        if interface.lower() is 'rtt':
+        if interface.lower() == 'rtt':
             self.interface = RTTInterface()
 
     def connect(self):
