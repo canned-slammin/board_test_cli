@@ -18,12 +18,15 @@ class UARTInterface:
     def __init__(self,
                  port=None,
                  hwid=None,
+                 serial_no=None,
                  baudrate=115200,
                  read_timeout=3,
                  write_timeout=3):
+
         self.port = port
         self.hwid = hwid
         self.baudrate = baudrate
+        self.serial_no = serial_no
         if self.port is None:
             self.port = self.find_port()
         self.ser = serial.Serial(port=self.port,
@@ -44,7 +47,10 @@ class UARTInterface:
         print('not yet implemented')
 
 class ZShell:
-    def __init__(self, interface='uart', port=None, hwid=None):
+    def __init__(self, interface='uart',
+                 port=None,
+                 hwid=None,
+                 serial_no=None):
         if interface.lower() == 'uart':
             self.interface = UARTInterface()
         if interface.lower() == 'rtt':
