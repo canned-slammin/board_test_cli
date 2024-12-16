@@ -4,36 +4,38 @@ from argparse import ArgumentDefaultsHelpFormatter
 
 from zshell import ZShell
 
-def test_connect():
-    print('not yet implemented')
-    return False
+class TestHarness:
 
-def run_tests(interface="uart", hwid=None, port=None, serial_no=None):
-    failures = []
+    def __init__(self, device_under_test:ZShell):
+        self.dut = device_under_test
+        self.results = {}
+        self.failure_log = []
 
-    if interface.lower() != 'uart' and interface.lower() != 'rtt':
-        failures.append(f'interface "{interface}" not recognized')
-        return failures
+    def test_connect(self):
+        result = self.dut.connect()
+        self.results.update({"Connect": result})
+
+
+def main(interface="uart", hwid=None, port=None, serial_no=None):
+
 
     dut = ZShell(interface=interface,
                  port=port,
                  hwid=hwid,
                  serial_no=serial_no)
 
-    if not test_connect():
-        failures.append(f'connect function failed')
-        return failures
+    test_harness = TestHarness(device_under_test=dut)
 
-def main(interface="uart", hwid=None, port=None, serial_no=None):
-    failures = run_tests(interface=interface,
-                         hwid=hwid,
-                         port=port,
-                         serial_no=serial_no)
-    if not failures:
-        print('Test Pass')
+    test_harness.test_connect()
+
+    for test in test_harness.results:
+        print(f'{test}: {test_harness.results[test]}')
+
+    if all(test_harness.results.values()):
+        print("PASS")
     else:
-        print('Test Failed')
-        for failure in failures:
+        print("FAIL")
+        for failure in test_harness.failure_log:
             print(failure)
 
 
@@ -55,4 +57,4 @@ if __name__ == "__main__":
                         help="Serial number of UART device")
     args=parser.parse_args()
 
-    main("uart")
+    main("uart", port="COM4")

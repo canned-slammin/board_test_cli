@@ -29,13 +29,20 @@ class UARTInterface:
         self.serial_no = serial_no
         if self.port is None:
             self.port = self.find_port()
+        # TODO set these parameters one by one because reasons
         self.ser = serial.Serial(port=self.port,
                                  baudrate=self.baudrate,
                                  timeout=read_timeout,
-                                 write_timeout=write_timeout)
+                                 write_timeout=write_timeout,)
 
     def connect(self):
-        print('not yet implemented')
+        """
+
+        """
+
+        self.ser.close()
+        self.ser.open()
+        return self.ser.is_open
 
     def read(self):
         print('not yet implemented')
@@ -44,7 +51,8 @@ class UARTInterface:
         print('not yet implemented')
 
     def find_port(self):
-        print('not yet implemented')
+        print('UART find port not yet implemented')
+        return None
 
 class ZShell:
     def __init__(self, interface='uart',
@@ -57,7 +65,7 @@ class ZShell:
             self.interface = RTTInterface()
 
     def connect(self):
-        self.interface.connect()
+        return self.interface.connect()
 
     def read(self):
         self.interface.read()
