@@ -1,4 +1,6 @@
+import re
 import serial
+from serial.tools import list_ports
 
 
 class RTTInterface:
@@ -52,8 +54,24 @@ class UARTInterface:
         print('not yet implemented')
 
     def find_port(self):
-        print('UART find port not yet implemented')
-        return None
+        """
+        iterates through ports and finds hwid and serial number
+        if both hwid and serial_no are given, prioritizes serial_no
+
+        returns port as string if found, None if not
+        """
+        pattern = re.compile(r'VID:PID=(\d{4}:\d{4}) SER=([a-zA-Z\d]*)')
+
+        for port in list_ports.comports():
+            hwid_match = pattern.search(port.hwid)
+            if self.serial_no is not None:
+                if hwid_match.group(2) == self.serial_no:
+                    return port.device
+            if self.hwid is not None:
+                if hwid_match.group(1) == self.hwid:
+                    return port.device
+
+            return None
 
 class ZShell:
     def __init__(self, interface='uart',
