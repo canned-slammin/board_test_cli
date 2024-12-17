@@ -43,18 +43,18 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="ZShell test harness",
                                      formatter_class=ArgumentDefaultsHelpFormatter)
-    parser.add_argument("--port",
-                        action='store_true',
+    parser.add_argument('-p',"--port",
                         default=None,
                         help="port of UART device")
-    parser.add_argument("--hwid",
-                        action="store_true",
+    parser.add_argument('-i',"--hwid",
                         default=None,
                         help="VID:PID (4 digits each) of UART device")
-    parser.add_argument("--serial_no",
-                        action="store_true",
+    parser.add_argument('-s',"--serial_no",
                         default=None,
                         help="Serial number of UART device")
-    args=parser.parse_args()
+    args = parser.parse_args()
 
-    main("uart", port="COM4")
+    main("uart",
+         port=args.port,
+         hwid=args.hwid,
+         serial_no=args.serial_no)

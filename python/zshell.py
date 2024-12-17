@@ -27,13 +27,14 @@ class UARTInterface:
         self.hwid = hwid
         self.baudrate = baudrate
         self.serial_no = serial_no
+
         if self.port is None:
             self.port = self.find_port()
-        # TODO set these parameters one by one because reasons
-        self.ser = serial.Serial(port=self.port,
-                                 baudrate=self.baudrate,
-                                 timeout=read_timeout,
-                                 write_timeout=write_timeout,)
+
+        self.ser = serial.Serial(port=self.port)
+        self.ser.baudrate = self.baudrate
+        self.ser.timeout = read_timeout
+        self.ser.write_timeout = write_timeout
 
     def connect(self):
         """
@@ -60,7 +61,9 @@ class ZShell:
                  hwid=None,
                  serial_no=None):
         if interface.lower() == 'uart':
-            self.interface = UARTInterface()
+            self.interface = UARTInterface(port=port,
+                                           hwid=hwid,
+                                           serial_no=serial_no)
         if interface.lower() == 'rtt':
             self.interface = RTTInterface()
 
