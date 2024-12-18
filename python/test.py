@@ -15,6 +15,13 @@ class TestHarness:
         result = self.dut.connect()
         self.results.update({"Connect": result})
 
+    def test_write_read(self):
+        print('write/read not yet implemented')
+        print(f'{type(self.dut.interface)=}')
+        write_bytes = self.dut.write(payload='help')
+        print(f'{write_bytes=}')
+        print(f'{self.dut.read()}')
+
 
 def main(interface="uart", hwid=None, port=None, serial_no=None):
 
@@ -27,6 +34,7 @@ def main(interface="uart", hwid=None, port=None, serial_no=None):
     test_harness = TestHarness(device_under_test=dut)
 
     test_harness.test_connect()
+    test_harness.test_write_read()
 
     for test in test_harness.results:
         print(f'{test}: {test_harness.results[test]}')

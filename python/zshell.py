@@ -40,18 +40,30 @@ class UARTInterface:
 
     def connect(self):
         """
+        Resets and opens port. Flushes input and output buffers.
 
+        Returns True if successful, False otherwise.
         """
 
         self.ser.close()
         self.ser.open()
-        return self.ser.is_open
+
+        if not self.ser.is_open:
+            return False
+
+        self.ser.reset_input_buffer()
+        self.ser.reset_output_buffer()
+
+        return True
 
     def read(self):
-        print('not yet implemented')
+        buf = []
+        while self.ser.in_waiting:
+            buf.append(self.ser.readline().decode())
+        return buf
 
-    def write(self):
-        print('not yet implemented')
+    def write(self, payload:str):
+        return self.ser.write(f'{payload}\r\n'.encode())
 
     def find_port(self):
         """
@@ -91,8 +103,8 @@ class ZShell:
     def read(self):
         self.interface.read()
 
-    def write(self):
-        self.interface.write()
+    def write(self, payload:str):
+        self.interface.write(payload)
 
     def gpio_conf(self, io='input', pull=None, active=None, init=None, config_flags=None):
         print('not yet implemented')
