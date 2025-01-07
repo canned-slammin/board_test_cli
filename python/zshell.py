@@ -13,7 +13,7 @@ class RTTInterface:
     def read(self):
         print('not yet implemented')
 
-    def write(self):
+    def write(self, payload):
         print('not yet implemented')
 
 class UARTInterface:
@@ -63,7 +63,7 @@ class UARTInterface:
         return buf
 
     def write(self, payload:str):
-        return self.ser.write(f'{payload}\r\n'.encode())
+        return self.ser.write(f'{payload}\n'.encode())
 
     def find_port(self):
         """
@@ -101,10 +101,10 @@ class ZShell:
         return self.interface.connect()
 
     def read(self):
-        self.interface.read()
+        return self.interface.read()
 
     def write(self, payload:str):
-        self.interface.write(payload)
+        return self.interface.write(payload)
 
     def gpio_conf(self, io='input', pull=None, active=None, init=None, config_flags=None):
         print('not yet implemented')
