@@ -57,10 +57,16 @@ class UARTInterface:
         return True
 
     def read(self):
-        buf = []
+        """
+        reads bytes off the serial port while there are bytes waiting
+        converts to string and returns entire string once there are no bytes
+        """
+        output = ""
         while self.ser.in_waiting:
-            buf.append(self.ser.readline().decode())
-        return buf
+            bytes_read = self.ser.readline()
+            print(f'{bytes_read=}')  # TODO debug
+            output += bytes_read.decode()
+        return output
 
     def write(self, payload:str):
         return self.ser.write(f'{payload}\n'.encode())

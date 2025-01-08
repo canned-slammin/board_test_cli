@@ -17,14 +17,28 @@ class TestHarness:
 
     def test_write_read(self):
         result = False
+        failures = []
+        payload = 'help'
+        bytes_written = len(payload) + 1  # extra character is for newline \n
+        expected_output = 'Please press the <Tab> button to see all available commands.\r\n'
 
-        print(f'{type(self.dut.interface)=}')
-        print(f'{self.dut.interface.write=}')
-        print(f'{self.dut.write=}')
         write_bytes = self.dut.write(payload='help')
-        print(f'{write_bytes=}')
-        print(f'{self.dut.read()}')
+        if write_bytes != bytes_written:
+            failures.append("Bytes written did not match expected value")
 
+        print(f'{write_bytes=}')
+
+        output = self.dut.read()
+        print(f'{output=}')
+        interface_output = self.dut.interface.read()
+        print(f'{interface_output=}')
+        if expected_output not in output:
+            failures.append("Unexpected output from read function")
+
+        if not failures:
+            result = True
+
+        self.failure_log += failures
         self.results.update({"Write/Read": result})
 
 
