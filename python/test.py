@@ -37,8 +37,24 @@ class TestHarness:
         self.failure_log += failures
         self.results.update({"Write/Read": result})
 
+    def test_gpio_conf(self, num_pins: int):
+        result = False
+        failures = []
 
-def main(interface="uart", hwid=None, port=None, serial_no=None):
+        # test configure
+        print(f'{num_pins=}')  # TODO debug
+        failures.append('GPIO configure not yet implemented')
+
+        self.failure_log += failures
+        self.results.update({"GPIO Configure": result})
+
+
+
+def main(num_pins: int,
+         interface="uart",
+         hwid=None,
+         port=None,
+         serial_no=None):
 
 
     dut = ZShell(interface=interface,
@@ -50,6 +66,7 @@ def main(interface="uart", hwid=None, port=None, serial_no=None):
 
     test_harness.test_connect()
     test_harness.test_write_read()
+    test_harness.test_gpio_conf(num_pins=num_pins)
 
     for test in test_harness.results:
         print(f'{test}: {test_harness.results[test]}')
@@ -75,9 +92,13 @@ if __name__ == "__main__":
     parser.add_argument('-s',"--serial_no",
                         default=None,
                         help="Serial number of UART device")
+    parser.add_argument('-g', '--gpio-pins',
+                        default=16,
+                        help="Number of GPIO pins to test")
     args = parser.parse_args()
 
-    main("uart",
+    main(num_pins=args.gpio_pins,
+         interface="uart",
          port=args.port,
          hwid=args.hwid,
          serial_no=args.serial_no)
