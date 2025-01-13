@@ -1,6 +1,7 @@
 
 import argparse
 from argparse import ArgumentDefaultsHelpFormatter
+from time import sleep
 
 from zshell import ZShell
 
@@ -26,12 +27,7 @@ class TestHarness:
         if write_bytes != bytes_written:
             failures.append("Bytes written did not match expected value")
 
-        print(f'{write_bytes=}')
-
         output = self.dut.read()
-        print(f'{output=}')
-        interface_output = self.dut.interface.read()
-        print(f'{interface_output=}')
         if expected_output not in output:
             failures.append("Unexpected output from read function")
 

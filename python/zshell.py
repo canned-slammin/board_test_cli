@@ -1,6 +1,7 @@
 import re
 import serial
 from serial.tools import list_ports
+from time import sleep
 
 
 class RTTInterface:
@@ -64,12 +65,13 @@ class UARTInterface:
         output = ""
         while self.ser.in_waiting:
             bytes_read = self.ser.readline()
-            print(f'{bytes_read=}')  # TODO debug
             output += bytes_read.decode()
         return output
 
     def write(self, payload:str):
-        return self.ser.write(f'{payload}\n'.encode())
+        bytes_read = self.ser.write(f'{payload}\n'.encode())
+        sleep(0.5)  # account for lag between read and write
+        return bytes_read
 
     def find_port(self):
         """
