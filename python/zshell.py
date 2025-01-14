@@ -4,19 +4,6 @@ from serial.tools import list_ports
 from time import sleep
 
 
-class RTTInterface:
-    def __init__(self):
-        print('RTT interface not yet implemented')
-
-    def connect(self):
-        print('not yet implemented')
-
-    def read(self):
-        print('not yet implemented')
-
-    def write(self, payload):
-        print('not yet implemented')
-
 class UARTInterface:
     def __init__(self,
                  port=None,
@@ -93,6 +80,21 @@ class UARTInterface:
 
             return None
 
+
+class RTTInterface:
+    def __init__(self):
+        print('RTT interface not yet implemented')
+
+    def connect(self):
+        print('not yet implemented')
+
+    def read(self):
+        print('not yet implemented')
+
+    def write(self, payload):
+        print('not yet implemented')
+
+
 class ZShell:
     def __init__(self, interface='uart',
                  port=None,
@@ -114,8 +116,63 @@ class ZShell:
     def write(self, payload:str):
         return self.interface.write(payload)
 
-    def gpio_conf(self, io='input', pull=None, active=None, init=None, config_flags=None):
-        print('not yet implemented')
+    def gpio_conf(self,
+                  device: str,
+                  pin: int,
+                  purpose='input',
+                  pull='',
+                  active='',
+                  init='',
+                  config_flags=''):
+
+        result = False
+        output = ''
+
+        if purpose.lower() == 'input':
+            io = 'i'
+        elif purpose.lower() == 'output':
+            io = 'o'
+        else:
+            raise Exception('GPIO Configure - Purpose must be input or output')
+
+        if not pull:
+            ud = ''
+        elif pull.lower() == 'up':
+            ud = 'u'
+        elif pull.lower() == 'down':
+            ud = 'd'
+        else:
+            raise Exception('GPIO Configure - pull must be up, down, or unspecified (defaults to open)')
+
+        if not active:
+            hl = ''
+        elif active.lower() == 'high':
+            hl = 'h'
+        elif active.lower() == 'low':
+            hl = 'l'
+        else:
+            raise Exception('GPIO Configure - active must be high, low, or unspecified (defaults to high)')
+
+        if not init:
+            init_10 = ''
+        elif str(init.lower()) == '0':
+            init_10 = '0'
+        elif str(init.lower()) == '1':
+            init_10 = '1'
+        else:
+            raise Exception('GPIO Configure - init must be 0, 1, or unspecified (defaults to 0)')
+
+
+        cmd = f'gpio conf {device} {str(pin)} {io} {ud} {hl} {init_10} {config_flags}'
+
+        self.interface.write(cmd)
+        output = self.read()
+        # TODO output='gpio conf gpio@50000000 0 i    \r\n\x1b[1;32muart:~$ \x1b[m'
+
+        if not output:  # successful command has no return
+            result = True
+
+        return result, output
 
     def gpio_get(self, device, pin):
         print('not yet implemented')

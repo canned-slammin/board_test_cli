@@ -1,7 +1,6 @@
 
 import argparse
 from argparse import ArgumentDefaultsHelpFormatter
-from time import sleep
 
 from zshell import ZShell
 
@@ -23,7 +22,7 @@ class TestHarness:
         bytes_written = len(payload) + 1  # extra character is for newline \n
         expected_output = 'Please press the <Tab> button to see all available commands.\r\n'
 
-        write_bytes = self.dut.write(payload='help')
+        write_bytes = self.dut.write(payload=payload)
         if write_bytes != bytes_written:
             failures.append("Bytes written did not match expected value")
 
@@ -37,12 +36,36 @@ class TestHarness:
         self.failure_log += failures
         self.results.update({"Write/Read": result})
 
-    def test_gpio_conf(self, num_pins: int):
+    def test_gpio_conf(self, num_pins: int, dev: str):
         result = False
         failures = []
 
-        # test configure
-        print(f'{num_pins=}')  # TODO debug
+        print(f'GPIO device: {dev}')  # TODO debug
+
+        #TODO test incorrect parameter - purpose FALSE
+        #TODO test incorrect parameter - pull FALSE
+        #TODO test incorrect parameter - active FALSE
+        #TODO test incorrect parameter - init FALSE
+        for pin in range(num_pins): # TODO why is this so slow? i suspect read() is timing out every time
+        #TODO test no parameters TRUE
+            result, output = self.dut.gpio_conf(device=dev, pin=pin)
+            print(f'{result=}\n{output=}')
+            # test configure input
+            ##TODO test configure pull up TRUE
+            ##TODO test configure pull down TRUE
+            ##TODO test configure active high TRUE?
+            ##TODO test configure active low TRUE?
+            ##TODO test configure init 0 FALSE
+            ##TODO test configure init 1 FALSE
+            ## test configure output
+            ## TODO test configure pull up TRUE?
+            ## TODO test configure pull down TRUE?
+            ## TODO test configure active high FALSE?
+            ## TODO test configure active low FALSE?
+            ## TODO test configure init 0 TRUE
+            ## TODO test configure init 1 TRUE
+
+
         failures.append('GPIO configure not yet implemented')
 
         self.failure_log += failures
@@ -51,6 +74,7 @@ class TestHarness:
 
 
 def main(num_pins: int,
+         gpio_device: str,
          interface="uart",
          hwid=None,
          port=None,
@@ -66,7 +90,7 @@ def main(num_pins: int,
 
     test_harness.test_connect()
     test_harness.test_write_read()
-    test_harness.test_gpio_conf(num_pins=num_pins)
+    test_harness.test_gpio_conf(num_pins=int(num_pins), dev=gpio_device)
 
     for test in test_harness.results:
         print(f'{test}: {test_harness.results[test]}')
@@ -93,11 +117,15 @@ if __name__ == "__main__":
                         default=None,
                         help="Serial number of UART device")
     parser.add_argument('-g', '--gpio-pins',
-                        default=16,
+                        default=None,
                         help="Number of GPIO pins to test")
+    parser.add_argument('-gd', '--gpio-device',
+                        default=None,
+                        help='GPIO device tree name (ex. gpio@50000000')
     args = parser.parse_args()
 
     main(num_pins=args.gpio_pins,
+         gpio_device=args.gpio_device,
          interface="uart",
          port=args.port,
          hwid=args.hwid,
