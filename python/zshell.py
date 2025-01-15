@@ -50,9 +50,14 @@ class UARTInterface:
         converts to string and returns entire string once there are no bytes
         """
         output = ""
+        # TODO this is not working - re module passing unterminated character exception
+        suffix = r'\x1b[m'
+
         while self.ser.in_waiting:
-            bytes_read = self.ser.readline()
-            output += bytes_read.decode()
+            bytes_read = self.ser.read_until(expected=suffix.encode())
+            output += re.sub(pattern=suffix,
+                             repl='',
+                             string=bytes_read.decode())
         return output
 
     def write(self, payload:str):
@@ -163,7 +168,7 @@ class ZShell:
             raise Exception('GPIO Configure - init must be 0, 1, or unspecified (defaults to 0)')
 
 
-        cmd = f'gpio conf {device} {str(pin)} {io} {ud} {hl} {init_10} {config_flags}'
+        cmd = f'gpio conf {device} {str(pin)} {io}{ud}{hl}{init_10} {config_flags}'
         print(f'{cmd=}')  # TODO debug
 
         self.interface.write(cmd)
@@ -171,8 +176,10 @@ class ZShell:
         print(f'{raw_output=}')  # TODO debug
 
         # TODO strip echo, terminal, and escape characters from output
-        extra_char = r'\r\n\x1b\[1;32m((uart)|(rtt)):~\$ \x1b\[m'
-        output = re.sub(pattern=f'{cmd}{extra_char}', repl='', string=raw_output)
+        # TODO move to read()
+        # extra_char = r'\r\n\x1b\[1;32m((uart)|(rtt)):~\$ \x1b\[m'
+        # output = re.sub(pattern=f'{cmd}{extra_char}', repl='', string=raw_output)
+        output = raw_output
 
         if not output:  # successful command has no return
             result = True

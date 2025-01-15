@@ -41,6 +41,7 @@ class TestHarness:
         failures = []
 
         print(f'GPIO device: {dev}')  # TODO debug
+        result, output = self.dut.gpio_conf(device=dev, pin=0, init='1')
 
         #TODO test incorrect parameter - purpose FALSE
         #TODO test incorrect parameter - pull FALSE
