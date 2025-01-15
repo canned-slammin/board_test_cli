@@ -37,7 +37,7 @@ class TestHarness:
         self.results.update({"Write/Read": result})
 
     def test_gpio_conf(self, num_pins: int, dev: str):
-        result = False
+        test_result = False
         failures = []
 
         print(f'GPIO device: {dev}')  # TODO debug
@@ -69,7 +69,7 @@ class TestHarness:
         failures.append('GPIO configure not yet implemented')
 
         self.failure_log += failures
-        self.results.update({"GPIO Configure": result})
+        self.results.update({"GPIO Configure": test_result})
 
 
 

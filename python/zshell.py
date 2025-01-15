@@ -110,7 +110,7 @@ class ZShell:
     def connect(self):
         return self.interface.connect()
 
-    def read(self):
+    def read(self) -> str:
         return self.interface.read()
 
     def write(self, payload:str):
@@ -164,10 +164,15 @@ class ZShell:
 
 
         cmd = f'gpio conf {device} {str(pin)} {io} {ud} {hl} {init_10} {config_flags}'
+        print(f'{cmd=}')  # TODO debug
 
         self.interface.write(cmd)
-        output = self.read()
-        # TODO output='gpio conf gpio@50000000 0 i    \r\n\x1b[1;32muart:~$ \x1b[m'
+        raw_output = self.read()
+        print(f'{raw_output=}')  # TODO debug
+
+        # TODO strip echo, terminal, and escape characters from output
+        extra_char = r'\r\n\x1b\[1;32m((uart)|(rtt)):~\$ \x1b\[m'
+        output = re.sub(pattern=f'{cmd}{extra_char}', repl='', string=raw_output)
 
         if not output:  # successful command has no return
             result = True
