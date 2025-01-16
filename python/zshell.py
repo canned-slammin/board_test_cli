@@ -51,11 +51,12 @@ class UARTInterface:
         """
         output = ""
         # TODO this is not working - re module passing unterminated character exception
-        suffix = r'\x1b[m'
+        suffix = b'\x1b[m'
+        strip_char =  r'\x1b\[m' #  note the backslash before [m
 
         while self.ser.in_waiting:
-            bytes_read = self.ser.read_until(expected=suffix.encode())
-            output += re.sub(pattern=suffix,
+            bytes_read = self.ser.read_until(expected=suffix)
+            output += re.sub(pattern=strip_char,
                              repl='',
                              string=bytes_read.decode())
         return output
@@ -64,6 +65,31 @@ class UARTInterface:
         bytes_read = self.ser.write(f'{payload}\n'.encode())
         sleep(0.5)  # account for lag between read and write
         return bytes_read
+
+    def send_command(self, cmd: str, expected_output=None, match_all=False):
+        """
+        writes given command
+        returns output via read()
+        if an expected output is specified, returns True or False for existence of output
+        if no output specified, returns None
+        if match_all set to True, entire output must match expected
+        accepts regex for expected_output
+        """
+
+        extra_char = r'\r\n\x1b\[1;32m((uart)|(rtt)):~\$ '
+        pattern = re.compile(pattern=f'{cmd}{extra_char}')
+        output = ''
+        result = None
+
+        self.interface.write(cmd)
+        raw_output = self.read()
+
+        # strip echo and escape characters from output
+        output = pattern.sub(repl='', string=raw_output)
+
+        # TODO expected output
+        return output, result
+
 
     def find_port(self):
         """
@@ -99,6 +125,9 @@ class RTTInterface:
     def write(self, payload):
         print('not yet implemented')
 
+    def send_command(self, cmd: str, expected_output=None, match_all=False):
+        print('not yet implemented')
+
 
 class ZShell:
     def __init__(self, interface='uart',
@@ -120,6 +149,11 @@ class ZShell:
 
     def write(self, payload:str):
         return self.interface.write(payload)
+
+    def send_command(self, cmd: str, expected_output = None, match_all = False):
+        return self.interface.send_command(cmd=cmd,
+                                           expected_output=expected_output,
+                                           match_all=match_all)
 
     def gpio_conf(self,
                   device: str,

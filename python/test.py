@@ -36,6 +36,16 @@ class TestHarness:
         self.failure_log += failures
         self.results.update({"Write/Read": result})
 
+    def test_send_command(self):
+        test_result = False
+        failures = []
+        cmd = "help"
+
+        failures.append("Send Command test not yet implemented")
+
+        self.failure_log += failures
+        self.results.update({"Send Command": test_result})
+
     def test_gpio_conf(self, num_pins: int, dev: str):
         test_result = False
         failures = []
