@@ -76,16 +76,20 @@ class UARTInterface:
         accepts regex for expected_output
         """
 
-        extra_char = r'\r\n\x1b\[1;32m((uart)|(rtt)):~\$ '
-        pattern = re.compile(pattern=f'{cmd}{extra_char}')
+        # TODO recently changed - needs testing
+        extra_char_pattern = re.compile(pattern=r'x1b\[(1;32m|13C|1;31m)')
+        terminal_pattern = re.compile(r'((uart)|(rtt)):~\$')
+        cmd_pattern = re.compile(pattern=f'^{cmd}')
         output = ''
         result = None
 
-        self.interface.write(cmd)
+        self.write(cmd)
         raw_output = self.read()
 
         # strip echo and escape characters from output
-        output = pattern.sub(repl='', string=raw_output)
+        output = extra_char_pattern.sub(repl='', string=raw_output)
+        output = cmd_pattern.sub(repl='', string=output)
+        output = terminal_pattern.sub(repl='', string=output)
 
         # TODO expected output
         return output, result

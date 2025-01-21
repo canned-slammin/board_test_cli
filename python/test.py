@@ -41,7 +41,10 @@ class TestHarness:
         failures = []
         cmd = "help"
 
-        failures.append("Send Command test not yet implemented")
+        output, result = self.dut.send_command(cmd)
+        print(f'{output=}\n{result=}')  # TODO debug
+        # TODO expected output
+        # TODO match all expected output
 
         self.failure_log += failures
         self.results.update({"Send Command": test_result})
@@ -101,6 +104,7 @@ def main(num_pins: int,
 
     test_harness.test_connect()
     test_harness.test_write_read()
+    test_harness.test_send_command()
     test_harness.test_gpio_conf(num_pins=int(num_pins), dev=gpio_device)
 
     for test in test_harness.results:
