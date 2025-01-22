@@ -59,12 +59,15 @@ class TestHarness:
         #TODO test incorrect parameter - pull FALSE
         #TODO test incorrect parameter - active FALSE
         #TODO test incorrect parameter - init FALSE
-        for pin in range(num_pins): 
-        #TODO test no parameters TRUE
+        for pin in range(num_pins):
+            # test no parameters TRUE
             result, output = self.dut.gpio_conf(device=dev, pin=pin)
-            print(f'{result=}\n{output=}')
-            # test configure input
+            if not result:
+                failures.append(f'gpio_conf() failed with no parameters pin {pin}: {output}')
             ##TODO test configure pull up TRUE
+            result, output = self.dut.gpio_conf(device=dev, pin=pin, pull='up')
+            if not result:
+                failures.append(f'gpio_conf() failed with pull="up" pin {pin}: {output}')
             ##TODO test configure pull down TRUE
             ##TODO test configure active high TRUE?
             ##TODO test configure active low TRUE?
@@ -101,10 +104,22 @@ def main(num_pins: int,
 
     test_harness = TestHarness(device_under_test=dut)
 
+    print("Testing connect()...")
     test_harness.test_connect()
+    print("Finished testing connect()")
+    print(f'{test_harness.failure_log=}')
+    print("Testing write() and read()...")
     test_harness.test_write_read()
+    print("Finished testing write() and read()")
+    print(f'{test_harness.failure_log=}')
+    print("Testing send_command()...")
     test_harness.test_send_command()
+    print("Finished testing send_command()")
+    print(f'{test_harness.failure_log=}')
+    print("Testing gpio_conf()...")
     test_harness.test_gpio_conf(num_pins=int(num_pins), dev=gpio_device)
+    print("Finished testing gpio_conf()")
+    print(f'{test_harness.failure_log=}')
 
     for test in test_harness.results:
         print(f'{test}: {test_harness.results[test]}')
