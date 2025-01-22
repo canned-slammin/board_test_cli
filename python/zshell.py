@@ -66,22 +66,17 @@ class UARTInterface:
         sleep(0.5)  # account for lag between read and write
         return bytes_read
 
-    def send_command(self, cmd: str, expected_output=None, match_all=False):
+    def send_command(self, cmd: str):
         """
         writes given command
         returns output via read()
-        if an expected output is specified, returns True or False for existence of output
-        if no output specified, returns None
-        if match_all set to True, entire output must match expected
-        accepts regex for expected_output
+        strips escape/control characters, command echo, and terminal name
         """
 
-        # TODO recently changed - needs testing
-        extra_char_pattern = re.compile(pattern=r'x1b\[(1;32m|13C|1;31m)')
+        extra_char_pattern = re.compile(pattern=r'\x1b\[(1;32m|13C|1;31m)')
         terminal_pattern = re.compile(r'((uart)|(rtt)):~\$')
         cmd_pattern = re.compile(pattern=f'^{cmd}')
         output = ''
-        result = None
 
         self.write(cmd)
         raw_output = self.read()
@@ -91,8 +86,7 @@ class UARTInterface:
         output = cmd_pattern.sub(repl='', string=output)
         output = terminal_pattern.sub(repl='', string=output)
 
-        # TODO expected output
-        return output, result
+        return output
 
 
     def find_port(self):
@@ -154,10 +148,8 @@ class ZShell:
     def write(self, payload:str):
         return self.interface.write(payload)
 
-    def send_command(self, cmd: str, expected_output = None, match_all = False):
-        return self.interface.send_command(cmd=cmd,
-                                           expected_output=expected_output,
-                                           match_all=match_all)
+    def send_command(self, cmd: str):
+        return self.interface.send_command(cmd=cmd)
 
     def gpio_conf(self,
                   device: str,
@@ -207,17 +199,8 @@ class ZShell:
 
 
         cmd = f'gpio conf {device} {str(pin)} {io}{ud}{hl}{init_10} {config_flags}'
-        print(f'{cmd=}')  # TODO debug
 
-        self.interface.write(cmd)
-        raw_output = self.read()
-        print(f'{raw_output=}')  # TODO debug
-
-        # TODO strip echo, terminal, and escape characters from output
-        # TODO move to read()
-        # extra_char = r'\r\n\x1b\[1;32m((uart)|(rtt)):~\$ \x1b\[m'
-        # output = re.sub(pattern=f'{cmd}{extra_char}', repl='', string=raw_output)
-        output = raw_output
+        self.send_command(cmd=cmd)
 
         if not output:  # successful command has no return
             result = True

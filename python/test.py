@@ -40,11 +40,11 @@ class TestHarness:
         test_result = False
         failures = []
         cmd = "help"
+        expected_output = "\r\nPlease press the <Tab> button to see all available commands.\r\nYou can also use the <Tab> button to prompt or auto-complete all commands or its subcommands.\r\nYou can try to call commands with <-h> or <--help> parameter for more information.\r\n\r\nShell supports following meta-keys:\r\n  Ctrl + (a key from: abcdefklnpuw)\r\n  Alt  + (a key from: bf)\r\nPlease refer to shell documentation for more details.\r\n\r\nAvailable commands:\r\n  clear  : Clear screen.\r\n  device  : Device commands\r\n  devmem  : Read/write physical memory\r\nUsage:\r\nRead memory at address with optional width:\r\ndevmem <address> [<width>]\r\nWrite memory at address with mandatory width and value:\r\ndevmem <address> <width> <value>\r\n  gpio  : GPIO commands\r\n  help  : Prints the help message.\r\n  history  : Command history.\r\n  i2c  : I2C commands\r\n  kernel  : Kernel commands\r\n  pwm  : PWM shell commands\r\n  rem  : Ignore lines beginning with 'rem '\r\n  resize  : Console gets terminal screen size or assumes default in case the\r\nreadout fails. It must be executed after each terminal width change\r\nto ensure correct text display.\r\n  retval  : Print return value of most recent command\r\n  shell  : Useful, not Unix-like shell commands.\r\n  spi  : SPI commands\r\n "
 
-        output, result = self.dut.send_command(cmd)
-        print(f'{output=}\n{result=}')  # TODO debug
-        # TODO expected output
-        # TODO match all expected output
+        output = self.dut.send_command(cmd)
+
+        test_result = (output == expected_output)
 
         self.failure_log += failures
         self.results.update({"Send Command": test_result})
@@ -53,14 +53,13 @@ class TestHarness:
         test_result = False
         failures = []
 
-        print(f'GPIO device: {dev}')  # TODO debug
         result, output = self.dut.gpio_conf(device=dev, pin=0, init='1')
 
         #TODO test incorrect parameter - purpose FALSE
         #TODO test incorrect parameter - pull FALSE
         #TODO test incorrect parameter - active FALSE
         #TODO test incorrect parameter - init FALSE
-        for pin in range(num_pins): # TODO why is this so slow? i suspect read() is timing out every time
+        for pin in range(num_pins): 
         #TODO test no parameters TRUE
             result, output = self.dut.gpio_conf(device=dev, pin=pin)
             print(f'{result=}\n{output=}')
