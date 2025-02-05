@@ -55,16 +55,44 @@ class TestHarness:
 
         result, output = self.dut.gpio_conf(device=dev, pin=0, init='1')
 
-        #TODO test incorrect parameter - purpose FALSE
-        #TODO test incorrect parameter - pull FALSE
-        #TODO test incorrect parameter - active FALSE
-        #TODO test incorrect parameter - init FALSE
+        # test incorrect parameter - purpose FALSE
+        try:
+            result, output = self.dut.gpio_conf(device=dev, pin=0, purpose='foo')
+            if result:
+                failures.append('Failed to raise exception for invalid purpose')
+        except Exception: # this is a hokey way of doing this
+            pass
+
+        # test incorrect parameter - pull FALSE
+        try:
+            result, output = self.dut.gpio_conf(device=dev, pin=0, pull='foo')
+            if result:
+                failures.append('Failed to raise exception for invalid pull direction')
+        except Exception: # this is a hokey way of doing this
+            pass
+
+        # test incorrect parameter - active FALSE
+        try:
+            result, output = self.dut.gpio_conf(device=dev, pin=0, active='foo')
+            if result:
+                failures.append('Failed to raise exception for invalid active parameter')
+        except Exception: # this is a hokey way of doing this
+            pass
+
+        # test incorrect parameter - init FALSE
+        try:
+            result, output = self.dut.gpio_conf(device=dev, pin=0, init='foo')
+            if result:
+                failures.append('Failed to raise exception for invalid active parameter')
+        except Exception: # this is a hokey way of doing this
+            pass
+
+
         for pin in range(num_pins):
             # test no parameters TRUE
             result, output = self.dut.gpio_conf(device=dev, pin=pin)
             if not result:
                 failures.append(f'gpio_conf() failed with no parameters pin {pin}: {output}')
-            ##TODO test configure pull up TRUE
             result, output = self.dut.gpio_conf(device=dev, pin=pin, pull='up')
             if not result:
                 failures.append(f'gpio_conf() failed with pull="up" pin {pin}: {output}')
