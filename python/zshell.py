@@ -86,7 +86,7 @@ class UARTInterface:
         output = cmd_pattern.sub(repl='', string=output)
         output = terminal_pattern.sub(repl='', string=output)
 
-        return output
+        return output.strip()
 
 
     def find_port(self):
@@ -200,7 +200,7 @@ class ZShell:
 
         cmd = f'gpio conf {device} {str(pin)} {io}{ud}{hl}{init_10} {config_flags}'
 
-        self.send_command(cmd=cmd)
+        output = self.send_command(cmd=cmd)
 
         if not output:  # successful command has no return
             result = True
@@ -208,7 +208,15 @@ class ZShell:
         return result, output
 
     def gpio_get(self, device, pin):
+        """
+        get value of given pin on given device
+        returns 0 for low, 1 for high
+        """
         print('not yet implemented')
+
+        #cmd = f'gpio get {device} {str(pin)}'
+
+
 
     def gpio_set(self, device, pin, level='0'):
         print('not yet implemented')
