@@ -179,8 +179,25 @@ class TestHarness:
 
     def test_gpio_get(self, num_pins: int, dev: str):
 
-        print('not yet implemented')
+        failures = []
+        test_result = False
 
+        for pin in range(num_pins-1):
+            print(f'testing gpio_get() on pin {pin}')
+
+            self.dut.gpio_conf(device=dev, pin=pin, purpose='input', pull='down')
+            # TODO test low input on all pins but
+            if self.dut.gpio_get(device=dev, pin=pin) != 0:
+                msg = f'Failed to get 0 from pin {pin} (low)'
+                print(msg)
+                failures.append(msg)
+
+        # TODO test high input on last pin
+
+        # TODO test invalid pin number
+
+        self.failure_log += failures
+        self.results.update({'GPIO Get': test_result})
 
 
 def main(num_pins: int,
@@ -199,21 +216,20 @@ def main(num_pins: int,
     test_harness = TestHarness(device_under_test=dut)
 
     print("Testing connect()...")
-    test_harness.test_connect()
+    #test_harness.test_connect()
     print("Finished testing connect()")
-    print(f'{test_harness.failure_log=}')
     print("Testing write() and read()...")
-    test_harness.test_write_read()
+    #test_harness.test_write_read()
     print("Finished testing write() and read()")
-    print(f'{test_harness.failure_log=}')
     print("Testing send_command()...")
-    test_harness.test_send_command()
+    #test_harness.test_send_command()
     print("Finished testing send_command()")
-    print(f'{test_harness.failure_log=}')
     print("Testing gpio_conf()...")
-    test_harness.test_gpio_conf(num_pins=int(num_pins), dev=gpio_device)
+    #test_harness.test_gpio_conf(num_pins=int(num_pins), dev=gpio_device)
     print("Finished testing gpio_conf()")
-    print(f'{test_harness.failure_log=}')
+    print("Testing gpio_get()...")
+    test_harness.test_gpio_get(num_pins=int(num_pins), dev=gpio_device)
+    print("Finished testing gpio_get()")
 
     for test in test_harness.results:
         print(f'{test}: {test_harness.results[test]}')

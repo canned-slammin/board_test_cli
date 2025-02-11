@@ -66,7 +66,7 @@ class UARTInterface:
         sleep(0.5)  # account for lag between read and write
         return bytes_read
 
-    def send_command(self, cmd: str):
+    def send_command(self, cmd: str) -> str:
         """
         writes given command
         returns output via read()
@@ -123,8 +123,10 @@ class RTTInterface:
     def write(self, payload):
         print('not yet implemented')
 
-    def send_command(self, cmd: str, expected_output=None, match_all=False):
+    def send_command(self, cmd: str, expected_output=None, match_all=False) -> str:
         print('not yet implemented')
+        output = ''
+        return ''
 
 
 class ZShell:
@@ -148,7 +150,7 @@ class ZShell:
     def write(self, payload:str):
         return self.interface.write(payload)
 
-    def send_command(self, cmd: str):
+    def send_command(self, cmd: str) -> str:
         return self.interface.send_command(cmd=cmd)
 
     def gpio_conf(self,
@@ -212,10 +214,14 @@ class ZShell:
         get value of given pin on given device
         returns 0 for low, 1 for high
         """
-        print('not yet implemented')
 
-        #cmd = f'gpio get {device} {str(pin)}'
+        cmd = f'gpio get {device} {str(pin)}'
+        output = self.send_command(cmd)
 
+        if not (output == '1' or output == '0'):
+            raise Exception(f'Error occurred getting gpio value: {output}')
+
+        return int(output)
 
 
     def gpio_set(self, device, pin, level='0'):
