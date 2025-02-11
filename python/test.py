@@ -89,68 +89,97 @@ class TestHarness:
 
 
         for pin in range(num_pins):
+            print(f'Testing gpio_conf on pin {pin}')
+
             # test no parameters TRUE
             result, output = self.dut.gpio_conf(device=dev, pin=pin)
             if not result:
-                failures.append(f'gpio_conf() failed with no parameters pin {pin}: {output}')
+                msg = f'gpio_conf() failed with no parameters pin {pin}: {output}'
+                print(msg)
+                failures.append(msg)
 
             # test configure inputs
             ## test configure pull ups TRUE
             result, output = self.dut.gpio_conf(device=dev, pin=pin, pull='up')
             if not result:
-                failures.append(f'gpio_conf() input failed with pull="up" pin {pin}: {output}')
+                msg = f'gpio_conf() input failed with pull="up" pin {pin}: {output}'
+                print(msg)
+                failures.append(msg)
 
             ## test configure pull down TRUE
             result, output = self.dut.gpio_conf(device=dev, purpose='input', pin=pin, pull='down')
             if not result:
-                failures.append(f'gpio_conf() input failed with pull="down" pin {pin}: {output}')
+                msg = f'gpio_conf() input failed with pull="down" pin {pin}: {output}'
+                print(msg)
+                failures.append(msg)
 
             ## test configure active high TRUE
             result, output = self.dut.gpio_conf(device=dev, pin=pin, active='high')
             if not result:
-                failures.append(f'gpio_conf() input failed with active="high" pin {pin}: {output}')
+                msg = f'gpio_conf() input failed with active="high" pin {pin}: {output}'
+                print(msg)
+                failures.append(msg)
 
             ## test configure active low TRUE
             result, output = self.dut.gpio_conf(device=dev, pin=pin, active='low')
             if not result:
-                failures.append(f'gpio_conf() input failed with active="low" pin {pin}: {output}')
+                msg = f'gpio_conf() input failed with active="low" pin {pin}: {output}'
+                print(msg)
+                failures.append(msg)
 
             ## test multiple input parameters
             result, output = self.dut.gpio_conf(device=dev, purpose='input', pin=pin, active='high', pull='down')
             if not result:
-                failures.append(f'gpio_conf() input failed with active="high" and pull="down" pin {pin}: {output}')
+                msg = f'gpio_conf() input failed with active="high" and pull="down" pin {pin}: {output}'
+                print(msg)
+                failures.append(msg)
 
             # test configure outputs
             ## test configure pull up TRUE?
             result, output = self.dut.gpio_conf(device=dev, purpose='output', pin=pin, pull='up')
             if not result:
-                failures.append(f'gpio_conf() output failed with pull="up" pin {pin}: {output}')
+                msg = f'gpio_conf() output failed with pull="up" pin {pin}: {output}'
+                print(msg)
+                failures.append(msg)
 
             ## test configure pull down TRUE?
             result, output = self.dut.gpio_conf(device=dev, purpose='output', pin=pin, pull='down')
             if not result:
-                failures.append(f'gpio_conf() output failed with pull="down" pin {pin}: {output}')
+                msg = f'gpio_conf() output failed with pull="down" pin {pin}: {output}'
+                print(msg)
+                failures.append(msg)
 
             ## test configure init 0 TRUE
             result, output = self.dut.gpio_conf(device=dev, purpose='output', pin=pin, init='0')
             if not result:
-                failures.append(f'gpio_conf() output failed with init="0" pin {pin}: {output}')
+                msg = f'gpio_conf() output failed with init="0" pin {pin}: {output}'
+                print(msg)
+                failures.append(msg)
 
             ## test configure init 1 TRUE
             result, output = self.dut.gpio_conf(device=dev, purpose='output', pin=pin, init='1')
             if not result:
-                failures.append(f'gpio_conf() output failed with init="1" pin {pin}: {output}')
+                msg = f'gpio_conf() output failed with init="1" pin {pin}: {output}'
+                print(msg)
+                failures.append(msg)
 
             ## test multiple output parameters
             result, output = self.dut.gpio_conf(device=dev, purpose='output', pin=pin, init='1', pull='up')
             if not result:
-                failures.append(f'gpio_conf() output failed with init="1" and pull="up" pin {pin}: {output}')
+                msg = f'gpio_conf() output failed with init="1" and pull="up" pin {pin}: {output}'
+                print(msg)
+                failures.append(msg)
 
         if not failures:
             test_result = True
 
         self.failure_log += failures
         self.results.update({"GPIO Configure": test_result})
+
+
+    def test_gpio_get(self, num_pins: int, dev: str):
+
+        print('not yet implemented')
 
 
 
