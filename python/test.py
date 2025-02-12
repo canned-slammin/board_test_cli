@@ -182,19 +182,34 @@ class TestHarness:
         failures = []
         test_result = False
 
-        for pin in range(num_pins-1):
-            print(f'testing gpio_get() on pin {pin}')
+        # test third and last pin low (pulled down)
+        self.dut.gpio_conf(device=dev, pin=2, purpose='input', pull='down')
+        if self.dut.gpio_get(device=dev, pin=2) != 0:
+            msg = f'Failed to get 0 from pin 2 (low)'
+            print(msg)
+            failures.append(msg)
 
-            self.dut.gpio_conf(device=dev, pin=pin, purpose='input', pull='down')
-            # TODO test low input on all pins but
-            if self.dut.gpio_get(device=dev, pin=pin) != 0:
-                msg = f'Failed to get 0 from pin {pin} (low)'
-                print(msg)
-                failures.append(msg)
+        self.dut.gpio_conf(device=dev, pin=num_pins-1, purpose='input', pull='down')
+        if self.dut.gpio_get(device=dev, pin=num_pins-1) != 0:
+            msg = f'Failed to get 0 from pin {num_pins-1} (low)'
+            print(msg)
+            failures.append(msg)
 
-        # TODO test high input on last pin
+        # test third and last pin high (pulled up)
+        self.dut.gpio_conf(device=dev, pin=2, purpose='input', pull='up')
+        if self.dut.gpio_get(device=dev, pin=2) != 1:
+            msg = f'Failed to get 1 from pin 2 (high)'
+            print(msg)
+            failures.append(msg)
 
-        # TODO test invalid pin number
+        self.dut.gpio_conf(device=dev, pin=num_pins-1, purpose='input', pull='up')
+        if self.dut.gpio_get(device=dev, pin=num_pins-1) != 1:
+            msg = f'Failed to get 1 from pin {num_pins-1} (high)'
+            print(msg)
+            failures.append(msg)
+
+        if not failures:
+            test_result = True
 
         self.failure_log += failures
         self.results.update({'GPIO Get': test_result})
@@ -216,16 +231,16 @@ def main(num_pins: int,
     test_harness = TestHarness(device_under_test=dut)
 
     print("Testing connect()...")
-    #test_harness.test_connect()
+    test_harness.test_connect()
     print("Finished testing connect()")
     print("Testing write() and read()...")
-    #test_harness.test_write_read()
+    test_harness.test_write_read()
     print("Finished testing write() and read()")
     print("Testing send_command()...")
-    #test_harness.test_send_command()
+    test_harness.test_send_command()
     print("Finished testing send_command()")
     print("Testing gpio_conf()...")
-    #test_harness.test_gpio_conf(num_pins=int(num_pins), dev=gpio_device)
+    test_harness.test_gpio_conf(num_pins=int(num_pins), dev=gpio_device)
     print("Finished testing gpio_conf()")
     print("Testing gpio_get()...")
     test_harness.test_gpio_get(num_pins=int(num_pins), dev=gpio_device)
