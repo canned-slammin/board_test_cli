@@ -225,7 +225,18 @@ class ZShell:
 
 
     def gpio_set(self, device, pin, level='0'):
-        print('not yet implemented')
+        """
+        set value of given pin on given device
+        """
+
+        if level != 0 and level != 1:
+            raise Exception(f'Pin set to invalid level: {level}')
+
+        cmd = f'gpio set {device} {str(pin)} {level}'
+        output = self.send_command(cmd)
+
+        if output: # successful command returns no output
+            raise Exception(f'Error occurred getting gpio value: {output}')
 
     def gpio_toggle(self, device, pin):
         print('not yet implemented')

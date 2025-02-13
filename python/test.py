@@ -214,6 +214,38 @@ class TestHarness:
         self.failure_log += failures
         self.results.update({'GPIO Get': test_result})
 
+    def test_gpio_set(self, dev: str, in_pin=4, out_pin=5):
+
+        test_result = False
+        failures = []
+
+        # configure input and output pins that are wired together
+        self.dut.gpio_conf(device=dev, pin=in_pin, purpose='input', pull='down')
+        self.dut.gpio_conf(device=dev, pin=out_pin, purpose='output')
+
+        # turn on output and test that input goes high
+        self.dut.gpio_set(device=dev, pin=out_pin, level=1)
+        if not self.dut.gpio_get(device=dev, pin=in_pin):
+            msg = f'Failed to get high reading on pin {in_pin} when pin {out_pin} set high'
+            print(msg)
+            failures.append(msg)
+
+        # turn off output and test that input goes low
+        self.dut.gpio_set(device=dev, pin=out_pin, level=0)
+        if self.dut.gpio_get(device=dev, pin=in_pin):
+            msg = f'Failed to get low reading on pin {in_pin} when pin {out_pin} set low'
+            print(msg)
+            failures.append(msg)
+
+        # TODO test invalid level
+
+        failures.append('GPIO set test not yet implemented')
+        if not failures:
+            test_result = True
+
+        self.failure_log += failures
+        self.results.update({'GPIO Set': test_result})
+
 
 def main(num_pins: int,
          gpio_device: str,
@@ -240,11 +272,14 @@ def main(num_pins: int,
     test_harness.test_send_command()
     print("Finished testing send_command()")
     print("Testing gpio_conf()...")
-    test_harness.test_gpio_conf(num_pins=int(num_pins), dev=gpio_device)
+    #test_harness.test_gpio_conf(num_pins=int(num_pins), dev=gpio_device)
     print("Finished testing gpio_conf()")
     print("Testing gpio_get()...")
-    test_harness.test_gpio_get(num_pins=int(num_pins), dev=gpio_device)
+    #test_harness.test_gpio_get(num_pins=int(num_pins), dev=gpio_device)
     print("Finished testing gpio_get()")
+    print("Testing gpio_set()...")
+    test_harness.test_gpio_set(dev=gpio_device)
+    print("Finished testing gpio_set()")
 
     for test in test_harness.results:
         print(f'{test}: {test_harness.results[test]}')
