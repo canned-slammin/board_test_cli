@@ -293,6 +293,10 @@ class TestHarness:
         self.failure_log += failures
         self.results.update({'GPIO Toggle': test_result})
 
+    def test_gpio_devices(self, dev: str):
+        print('not yet implemented')
+        # TODO add gpio1 in device tree before testing (will need jlink)
+
 def main(num_pins: int,
          gpio_device: str,
          interface="uart",

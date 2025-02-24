@@ -243,6 +243,10 @@ class ZShell:
 
     def gpio_devices(self):
         print('not yet implemented')
+        # TODO parse lines into items in a list
+        # TODO discard first line ("Device Other names")
+        # TODO assume other names is space separated - parse each item by spaces into another list
+        # TODO return list of lists
 
     def gpio_blink(self, device, pin):
         print('not yet implemented')
