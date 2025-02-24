@@ -2,3 +2,7 @@
 &i2c0 {
 	status = "okay";
 };
+
+&adc {
+	status = "okay";
+};
