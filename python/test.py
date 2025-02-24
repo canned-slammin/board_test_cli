@@ -224,28 +224,74 @@ class TestHarness:
         self.dut.gpio_conf(device=dev, pin=out_pin, purpose='output')
 
         # turn on output and test that input goes high
-        self.dut.gpio_set(device=dev, pin=out_pin, level=1)
+        output = self.dut.gpio_set(device=dev, pin=out_pin, level=1)
+        if output:
+            msg = f'Error occured while setting pin {out_pin} to 1: {output}'
         if not self.dut.gpio_get(device=dev, pin=in_pin):
             msg = f'Failed to get high reading on pin {in_pin} when pin {out_pin} set high'
             print(msg)
             failures.append(msg)
 
         # turn off output and test that input goes low
-        self.dut.gpio_set(device=dev, pin=out_pin, level=0)
+        output = self.dut.gpio_set(device=dev, pin=out_pin, level=0)
+        if output:
+            msg = f'Error occured while setting pin {out_pin} to 0: {output}'
         if self.dut.gpio_get(device=dev, pin=in_pin):
             msg = f'Failed to get low reading on pin {in_pin} when pin {out_pin} set low'
             print(msg)
             failures.append(msg)
 
-        # TODO test invalid level
+        # test invalid level
+        try:
+            self.dut.gpio_set(device=dev, pin=out_pin, level=2)
+            msg = f'Failed to throw exception for invalid level'
+            print(msg)
+            failures.append(msg)
+        except:
+            pass
 
-        failures.append('GPIO set test not yet implemented')
         if not failures:
             test_result = True
 
         self.failure_log += failures
         self.results.update({'GPIO Set': test_result})
 
+    def test_gpio_toggle(self, dev: str, in_pin=4, out_pin=5):
+
+        test_result = False
+        failures = []
+
+        # configure input and output pins that are wired together
+        self.dut.gpio_conf(device=dev, pin=in_pin, purpose='input', pull='down')
+        self.dut.gpio_conf(device=dev, pin=out_pin, purpose='output', init='0')
+
+        # toggle pin high
+        output = self.dut.gpio_toggle(device=dev, pin=out_pin)
+        if output:
+            msg = f'Error occurred while toggling pin {out_pin}'
+            print(msg)
+            failures.append(msg)
+        if not self.dut.gpio_get(device=dev, pin=in_pin):
+            msg = f'Failed to toggle pin {out_pin} high'
+            print(msg)
+            failures.append(msg)
+
+        # toggle pin low
+        output = self.dut.gpio_toggle(device=dev, pin=out_pin)
+        if output:
+            msg = f'Error occurred while toggling pin {out_pin}'
+            print(msg)
+            failures.append(msg)
+        if self.dut.gpio_get(device=dev, pin=in_pin):
+            msg = f'Failed to toggle pin {out_pin} low'
+            print(msg)
+            failures.append(msg)
+
+        if not failures:
+            test_result = True
+
+        self.failure_log += failures
+        self.results.update({'GPIO Toggle': test_result})
 
 def main(num_pins: int,
          gpio_device: str,
@@ -271,15 +317,18 @@ def main(num_pins: int,
     print("Testing send_command()...")
     test_harness.test_send_command()
     print("Finished testing send_command()")
-    print("Testing gpio_conf()...")
+    #print("Testing gpio_conf()...")
     #test_harness.test_gpio_conf(num_pins=int(num_pins), dev=gpio_device)
-    print("Finished testing gpio_conf()")
-    print("Testing gpio_get()...")
+    #print("Finished testing gpio_conf()")
+    #print("Testing gpio_get()...")
     #test_harness.test_gpio_get(num_pins=int(num_pins), dev=gpio_device)
-    print("Finished testing gpio_get()")
+    #print("Finished testing gpio_get()")
     print("Testing gpio_set()...")
     test_harness.test_gpio_set(dev=gpio_device)
     print("Finished testing gpio_set()")
+    print("Testing gpio_toggle()")
+    test_harness.test_gpio_toggle(dev=gpio_device)
+    print("Finished testing gpio_toggle()")
 
     for test in test_harness.results:
         print(f'{test}: {test_harness.results[test]}')
@@ -288,6 +337,7 @@ def main(num_pins: int,
         print("PASS")
     else:
         print("FAIL")
+        print("Failure log:")
         for failure in test_harness.failure_log:
             print(failure)
 
