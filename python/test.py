@@ -293,16 +293,36 @@ class TestHarness:
         self.failure_log += failures
         self.results.update({'GPIO Toggle': test_result})
 
-    def test_gpio_devices(self, dev: str):
-        print('not yet implemented')
+    def test_gpio_devices(self, expected_dev: str):
+        failures = []
+        matches = []
+        test_result = False
+        gpio_dev_list = []
+        expected_dev = expected_dev.split(':')
+
+        for dev in expected_dev:
+            gpio_dev_list.append(dev.split(','))
+
         # TODO add gpio1 in device tree before testing (will need jlink)
+        # TODO test that expected devices are present
+        # TODO lol jk there's only one gpio port
+        output = self.dut.gpio_devices()
+
+        failures.append("GPIO devices test not yet implemented")
+
+        if not failures:
+            test_result = True
+
+        self.failure_log += failures
+        self.results.update({'GPIO Devices': test_result})
 
 def main(num_pins: int,
          gpio_device: str,
          interface="uart",
          hwid=None,
          port=None,
-         serial_no=None):
+         serial_no=None,
+         gpio_dev_list=None):
 
 
     dut = ZShell(interface=interface,
@@ -327,12 +347,15 @@ def main(num_pins: int,
     #print("Testing gpio_get()...")
     #test_harness.test_gpio_get(num_pins=int(num_pins), dev=gpio_device)
     #print("Finished testing gpio_get()")
-    print("Testing gpio_set()...")
-    test_harness.test_gpio_set(dev=gpio_device)
-    print("Finished testing gpio_set()")
-    print("Testing gpio_toggle()")
-    test_harness.test_gpio_toggle(dev=gpio_device)
-    print("Finished testing gpio_toggle()")
+    #print("Testing gpio_set()...")
+    #test_harness.test_gpio_set(dev=gpio_device)
+    #print("Finished testing gpio_set()")
+    #print("Testing gpio_toggle()")
+    #test_harness.test_gpio_toggle(dev=gpio_device)
+    #print("Finished testing gpio_toggle()")
+    print("Testing gpio_devices")
+    test_harness.test_gpio_devices(expected_dev=gpio_dev_list)
+    print("Finished testing gpio_devices()")
 
     for test in test_harness.results:
         print(f'{test}: {test_harness.results[test]}')
@@ -364,7 +387,10 @@ if __name__ == "__main__":
                         help="Number of GPIO pins to test")
     parser.add_argument('-gd', '--gpio-device',
                         default=None,
-                        help='GPIO device tree name (ex. gpio@50000000')
+                        help='GPIO device tree name (ex. gpio@50000000)')
+    parser.add_argument('-gl', '--gpio-dev-list',
+                        default="gpio@50000000,gpio0:gpio@50000300,gpio1",
+                        help='List of all GPIO devices and other names expected on tree, as a string, in a,b:c,d format')
     args = parser.parse_args()
 
     main(num_pins=args.gpio_pins,
@@ -372,4 +398,5 @@ if __name__ == "__main__":
          interface="uart",
          port=args.port,
          hwid=args.hwid,
-         serial_no=args.serial_no)
+         serial_no=args.serial_no,
+         gpio_dev_list=args.gpio_dev_list)

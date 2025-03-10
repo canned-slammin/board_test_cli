@@ -1,0 +1,1 @@
+|RAM:COPY:C:/Users/samburner/zephyrproject/zephyr/soc/nxp/imxrt/imxrt6xx/cm33/flash_clock_setup.c

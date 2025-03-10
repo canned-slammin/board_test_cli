@@ -1,0 +1,7 @@
+&pinctrl {
+	pinmux_flexcomm0_usart: pinmux_flexcomm0_usart {
+		group1 {
+			input-enable;
+		};
+	};
+};

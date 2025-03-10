@@ -1,0 +1,5 @@
+west:
+  command: C:\Users\samburner\zephyrproject\.venv\Scripts\west build -p always -b
+    mimxrt685_evk/mimxrt685s/cm33
+  topdir: C:\Users\samburner\zephyrproject
+  version: 1.3.0

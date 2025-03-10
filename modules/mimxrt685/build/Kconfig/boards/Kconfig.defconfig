@@ -1,0 +1,2 @@
+# Load Zephyr board defconfig descriptions.
+osource "C:/Users/samburner/zephyrproject/zephyr/boards/nxp/mimxrt685_evk/Kconfig.defconfig"

@@ -242,11 +242,19 @@ class ZShell:
         return self.send_command(cmd)
 
     def gpio_devices(self):
-        print('not yet implemented')
+        """
+        returns tuple of tuples containing device name and aliases for each GPIO device in tree
+        """
+        output = []
+        shell_output = self.send_command('gpio devices')
         # TODO parse lines into items in a list
         # TODO discard first line ("Device Other names")
+        raw_list = shell_output.split('\n')[1:]
         # TODO assume other names is space separated - parse each item by spaces into another list
-        # TODO return list of lists
+        for item in raw_list:
+            output.append(tuple(item.split(' ')))
+
+        return tuple(output)
 
     def gpio_blink(self, device, pin):
         print('not yet implemented')
