@@ -153,6 +153,9 @@ class ZShell:
     def send_command(self, cmd: str) -> str:
         return self.interface.send_command(cmd=cmd)
 
+    def device_list(self):
+        print('not yet implemented')
+
     def gpio_conf(self,
                   device: str,
                   pin: int,

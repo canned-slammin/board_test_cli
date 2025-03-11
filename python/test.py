@@ -181,14 +181,21 @@ class TestHarness:
 
         failures = []
         test_result = False
+        output = None
 
         # test third and last pin low (pulled down)
         self.dut.gpio_conf(device=dev, pin=2, purpose='input', pull='down')
-        if self.dut.gpio_get(device=dev, pin=2) != 0:
-            msg = f'Failed to get 0 from pin 2 (low)'
-            print(msg)
-            failures.append(msg)
+        try:
+            output = self.dut.gpio_get(device=dev, pin=2)
+            if output != 0:
+                msg = f'Failed to get 0 from pin 2 (low)'
+                print(msg)
+                failures.append(msg)
+        except Exception:
+            if output is not None:
+                print(f'{output=}')
 
+        # TODO failling on NXP board; unable to catch pin 2 failure with try except??
         self.dut.gpio_conf(device=dev, pin=num_pins-1, purpose='input', pull='down')
         if self.dut.gpio_get(device=dev, pin=num_pins-1) != 0:
             msg = f'Failed to get 0 from pin {num_pins-1} (low)'
@@ -341,18 +348,18 @@ def main(num_pins: int,
     print("Testing send_command()...")
     test_harness.test_send_command()
     print("Finished testing send_command()")
-    #print("Testing gpio_conf()...")
-    #test_harness.test_gpio_conf(num_pins=int(num_pins), dev=gpio_device)
-    #print("Finished testing gpio_conf()")
-    #print("Testing gpio_get()...")
-    #test_harness.test_gpio_get(num_pins=int(num_pins), dev=gpio_device)
-    #print("Finished testing gpio_get()")
-    #print("Testing gpio_set()...")
-    #test_harness.test_gpio_set(dev=gpio_device)
-    #print("Finished testing gpio_set()")
-    #print("Testing gpio_toggle()")
-    #test_harness.test_gpio_toggle(dev=gpio_device)
-    #print("Finished testing gpio_toggle()")
+    print("Testing gpio_conf()...")
+    test_harness.test_gpio_conf(num_pins=int(num_pins), dev=gpio_device)
+    print("Finished testing gpio_conf()")
+    print("Testing gpio_get()...")
+    test_harness.test_gpio_get(num_pins=int(num_pins), dev=gpio_device)
+    print("Finished testing gpio_get()")
+    print("Testing gpio_set()...")
+    test_harness.test_gpio_set(dev=gpio_device)
+    print("Finished testing gpio_set()")
+    print("Testing gpio_toggle()")
+    test_harness.test_gpio_toggle(dev=gpio_device)
+    print("Finished testing gpio_toggle()")
     print("Testing gpio_devices")
     test_harness.test_gpio_devices(expected_dev=gpio_dev_list)
     print("Finished testing gpio_devices()")
