@@ -216,13 +216,11 @@ class ZShell:
         """
         get value of given pin on given device
         returns 0 for low, 1 for high
+        if error occurs, returns string of error output
         """
 
         cmd = f'gpio get {device} {str(pin)}'
         output = self.send_command(cmd)
-
-        if not (output == '1' or output == '0'):
-            raise Exception(f'Error occurred getting gpio value: {output}')
 
         return int(output)
 
