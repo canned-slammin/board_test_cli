@@ -202,8 +202,8 @@ class ZShell:
         else:
             raise Exception('GPIO Configure - init must be 0, 1, or unspecified (defaults to 0)')
 
-
         cmd = f'gpio conf {device} {str(pin)} {io}{ud}{hl}{init_10} {config_flags}'
+        print(cmd)  # TODO debug
 
         output = self.send_command(cmd=cmd)
 
@@ -222,7 +222,7 @@ class ZShell:
         cmd = f'gpio get {device} {str(pin)}'
         output = self.send_command(cmd)
 
-        return int(output)
+        return output
 
 
     def gpio_set(self, device, pin, level='0'):

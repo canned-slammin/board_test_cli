@@ -92,7 +92,11 @@ class TestHarness:
 
 
         for pin in range(num_pins):
-            print(f'Testing gpio_conf on pin {pin}')
+            # TODO debug
+            #print(f'Testing gpio_conf on pin {pin}')
+            # TODO freezes on pin 11 input when commands run manually
+            # TODO also 12, 13, 14... maybe everything higher than 10?
+            # TODO that means this test is flawed - fail if timeout maybe?
 
             # test no parameters TRUE
             result, output = self.dut.gpio_conf(device=dev, pin=pin)
@@ -187,11 +191,10 @@ class TestHarness:
         output = None
 
         # test third and last pin low (pulled down)
-        # TODO fails with blank gpio_get() output when gpio_conf is run
         self.dut.gpio_conf(device=dev, pin=2, purpose='input', pull='down')
         try:
             output = self.dut.gpio_get(device=dev, pin=2)
-            if output != 0:
+            if output != '0':
                 msg = f'Failed to get 0 from pin 2 (low)'
                 print(msg)
                 failures.append(msg)
@@ -201,20 +204,20 @@ class TestHarness:
                 print(f'{output=}')
 
         self.dut.gpio_conf(device=dev, pin=num_pins-1, purpose='input', pull='down')
-        if self.dut.gpio_get(device=dev, pin=num_pins-1) != 0:
+        if self.dut.gpio_get(device=dev, pin=num_pins-1) != '0':
             msg = f'Failed to get 0 from pin {num_pins-1} (low)'
             print(msg)
             failures.append(msg)
 
         # test third and last pin high (pulled up)
         self.dut.gpio_conf(device=dev, pin=2, purpose='input', pull='up')
-        if self.dut.gpio_get(device=dev, pin=2) != 1:
+        if self.dut.gpio_get(device=dev, pin=2) != '1':
             msg = f'Failed to get 1 from pin 2 (high)'
             print(msg)
             failures.append(msg)
 
         self.dut.gpio_conf(device=dev, pin=num_pins-1, purpose='input', pull='up')
-        if self.dut.gpio_get(device=dev, pin=num_pins-1) != 1:
+        if self.dut.gpio_get(device=dev, pin=num_pins-1) != '1':
             msg = f'Failed to get 1 from pin {num_pins-1} (high)'
             print(msg)
             failures.append(msg)
@@ -238,7 +241,9 @@ class TestHarness:
         output = self.dut.gpio_set(device=dev, pin=out_pin, level=1)
         if output:
             msg = f'Error occured while setting pin {out_pin} to 1: {output}'
-        if not self.dut.gpio_get(device=dev, pin=in_pin):
+            print(msg)
+            failures.append(msg)
+        if self.dut.gpio_get(device=dev, pin=in_pin) != '1':
             msg = f'Failed to get high reading on pin {in_pin} when pin {out_pin} set high'
             print(msg)
             failures.append(msg)
@@ -247,7 +252,9 @@ class TestHarness:
         output = self.dut.gpio_set(device=dev, pin=out_pin, level=0)
         if output:
             msg = f'Error occured while setting pin {out_pin} to 0: {output}'
-        if self.dut.gpio_get(device=dev, pin=in_pin):
+            print(msg)
+            failures.append(msg)
+        if self.dut.gpio_get(device=dev, pin=in_pin) != '0':
             msg = f'Failed to get low reading on pin {in_pin} when pin {out_pin} set low'
             print(msg)
             failures.append(msg)
@@ -352,15 +359,15 @@ def main(num_pins: int,
     print("Testing gpio_conf()...")
     test_harness.test_gpio_conf(num_pins=int(num_pins), dev=gpio_device)
     print("Finished testing gpio_conf()")
-    #print("Testing gpio_get()...")
-    #test_harness.test_gpio_get(num_pins=int(num_pins), dev=gpio_device)
-    #print("Finished testing gpio_get()")
-    #print("Testing gpio_set()...")
-    #test_harness.test_gpio_set(dev=gpio_device)
-    #print("Finished testing gpio_set()")
-    #print("Testing gpio_toggle()")
-    #test_harness.test_gpio_toggle(dev=gpio_device)
-    #print("Finished testing gpio_toggle()")
+    print("Testing gpio_get()...")
+    test_harness.test_gpio_get(num_pins=int(num_pins), dev=gpio_device)
+    print("Finished testing gpio_get()")
+    print("Testing gpio_set()...")
+    test_harness.test_gpio_set(dev=gpio_device)
+    print("Finished testing gpio_set()")
+    print("Testing gpio_toggle()")
+    test_harness.test_gpio_toggle(dev=gpio_device)
+    print("Finished testing gpio_toggle()")
     #print("Testing gpio_devices")
     #test_harness.test_gpio_devices(expected_dev=gpio_dev_list)
     #print("Finished testing gpio_devices()")
