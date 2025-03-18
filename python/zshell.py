@@ -62,9 +62,8 @@ class UARTInterface:
         return output
 
     def write(self, payload:str):
-        bytes_read = self.ser.write(f'{payload}\n'.encode())
-        sleep(0.5)  # account for lag between read and write
-        return bytes_read
+        bytes_written = self.ser.write(f'{payload}\n'.encode())
+        return bytes_written
 
     def send_command(self, cmd: str) -> str:
         """
@@ -79,6 +78,8 @@ class UARTInterface:
         output = ''
 
         self.write(cmd)
+        sleep(0.5)  # account for lag between read and write
+        # TODO is there a way to tell if this has timed out?
         raw_output = self.read()
 
         # strip echo and escape characters from output

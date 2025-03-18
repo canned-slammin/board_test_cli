@@ -95,7 +95,7 @@ class TestHarness:
             # TODO debug
             #print(f'Testing gpio_conf on pin {pin}')
             # TODO freezes on pin 11 input when commands run manually
-            # TODO also 12, 13, 14... maybe everything higher than 10?
+            # TODO also 12, 13, 14, and 29
             # TODO that means this test is flawed - fail if timeout maybe?
 
             # test no parameters TRUE
