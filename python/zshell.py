@@ -3,6 +3,26 @@ import serial
 from serial.tools import list_ports
 from time import sleep
 
+# TODO build framework for this in UART class, including __init__ option to NOT raise exception on timeout
+class UARTReadTimeout(Exception):
+    def __init__(self, bytes_read = None):
+        self.bytes_read = bytes_read
+        self.msg = "Timeout occurred reading serial port."
+
+    def __str__(self):
+        if self.bytes_read is not None:
+            return f'{self.msg} Bytes read: {self.bytes_read}'
+        else:
+            return self.msg
+
+
+class UARTWriteError(Exception):
+    def __init__(self, cmd, bytes_written):
+        self.cmd = cmd
+        self.bytes_written = bytes_written
+
+    def __str__(self):
+        return f'Error sending command ({self.bytes_written} bytes written): "{self.cmd}"'
 
 class UARTInterface:
     def __init__(self,
@@ -77,9 +97,12 @@ class UARTInterface:
         cmd_pattern = re.compile(pattern=f'^{cmd}')
         output = ''
 
-        self.write(cmd)
+        bytes_written = self.write(cmd)
+        if bytes_written < len(cmd):
+            raise UARTWriteError(cmd, bytes_written)
+
         sleep(0.5)  # account for lag between read and write
-        # TODO is there a way to tell if this has timed out?
+        # TODO institue custom timeout that raises UARTReadError
         raw_output = self.read()
 
         # strip echo and escape characters from output
